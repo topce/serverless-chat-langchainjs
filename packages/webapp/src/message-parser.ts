@@ -1,5 +1,5 @@
+import type { AIChatMessage } from '@microsoft/ai-chat-protocol';
 import { type HTMLTemplateResult, html, nothing } from 'lit';
-import { AIChatMessage } from '@microsoft/ai-chat-protocol';
 
 export type ParsedMessage = {
   html: HTMLTemplateResult;

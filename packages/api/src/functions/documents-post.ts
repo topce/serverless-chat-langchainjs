@@ -1,15 +1,15 @@
 import fs from 'node:fs/promises';
 import { type HttpRequest, type HttpResponseInit, type InvocationContext, app } from '@azure/functions';
+import { OllamaEmbeddings } from '@langchain/community/embeddings/ollama';
+import { AzureAISearchVectorStore } from '@langchain/community/vectorstores/azure_aisearch';
+import { FaissStore } from '@langchain/community/vectorstores/faiss';
 import { AzureOpenAIEmbeddings } from '@langchain/openai';
 import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
-import { AzureAISearchVectorStore } from '@langchain/community/vectorstores/azure_aisearch';
-import { OllamaEmbeddings } from '@langchain/community/embeddings/ollama';
-import { FaissStore } from '@langchain/community/vectorstores/faiss';
 import 'dotenv/config';
 import { BlobServiceClient } from '@azure/storage-blob';
-import { badRequest, serviceUnavailable, ok } from '../http-response';
-import { ollamaEmbeddingsModel, faissStoreFolder } from '../constants';
+import { faissStoreFolder, ollamaEmbeddingsModel } from '../constants';
+import { badRequest, ok, serviceUnavailable } from '../http-response';
 import { getAzureOpenAiTokenProvider, getCredentials } from '../security';
 
 export async function postDocuments(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {

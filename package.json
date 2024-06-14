@@ -15,6 +15,9 @@
     "upload:docs": "node scripts/upload-documents.js http://localhost:7071",
     "lint": "xo",
     "lint:fix": "xo --fix",
+    "lint:biome": "npx @biomejs/biome lint",
+    "lint:biome:fix": "npx @biomejs/biome lint --write",
+    "lint:biome:fix:all": "npx @biomejs/biome check --write",
     "format": "prettier --list-different --write .",
     "prepare": "simple-git-hooks || echo 'simple-git-hooks install skipped'"
   },
@@ -40,17 +43,16 @@
   ],
   "author": "Microsoft",
   "license": "MIT",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "devDependencies": {
+    "@biomejs/biome": "1.8.1",
     "concurrently": "^8.2.2",
-    "lint-staged": "^15.2.2",
-    "prettier": "^3.0.3",
-    "rimraf": "^5.0.5",
-    "simple-git-hooks": "^2.9.0",
-    "typescript": "^5.3.3",
-    "xo": "^0.58.0"
+    "lint-staged": "^15.2.7",
+    "prettier": "^3.3.2",
+    "rimraf": "^5.0.7",
+    "simple-git-hooks": "2.11.1",
+    "typescript": "5.4.5",
+    "xo": "0.58.0"
   },
   "engines": {
     "node": ">=20",
@@ -67,10 +69,16 @@
   "xo": {
     "space": true,
     "prettier": true,
-    "envs": [
-      "node"
-    ],
+    "envs": ["node"],
     "rules": {
+      "capitalized-comments": [
+        "error",
+        "always",
+        {
+          "ignorePattern": "biome-ignore",
+          "ignoreConsecutiveComments": true
+        }
+      ],
       "@typescript-eslint/triple-slash-reference": "off",
       "@typescript-eslint/naming-convention": "off",
       "@typescript-eslint/consistent-type-definitions": "off",
@@ -106,9 +114,7 @@
     "bracketSpacing": true,
     "overrides": [
       {
-        "files": [
-          "*.json"
-        ],
+        "files": ["*.json"],
         "options": {
           "parser": "json"
         }

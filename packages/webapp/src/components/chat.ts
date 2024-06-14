@@ -1,14 +1,14 @@
+import type { AIChatCompletionDelta, AIChatMessage } from '@microsoft/ai-chat-protocol';
 import { LitElement, css, html, nothing } from 'lit';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { map } from 'lit/directives/map.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import { customElement, property, state, query } from 'lit/decorators.js';
-import { AIChatCompletionDelta, AIChatMessage } from '@microsoft/ai-chat-protocol';
+import newChatSvg from '../../assets/new-chat.svg?raw';
+import questionSvg from '../../assets/question.svg?raw';
+import sendSvg from '../../assets/send.svg?raw';
 import { type ChatRequestOptions, getCitationUrl, getCompletion } from '../api.js';
 import { type ParsedMessage, parseMessageIntoHtml } from '../message-parser.js';
-import sendSvg from '../../assets/send.svg?raw';
-import questionSvg from '../../assets/question.svg?raw';
-import newChatSvg from '../../assets/new-chat.svg?raw';
 
 export type ChatComponentState = {
   hasError: boolean;
@@ -147,7 +147,7 @@ export class ChatComponent extends LitElement {
     }
   }
 
-  override requestUpdate(name?: string, oldValue?: any) {
+  override requestUpdate(name?: string, oldValue?: unknown) {
     if (name === 'messages') {
       const messagesUpdatedEvent = new CustomEvent('messagesUpdated', {
         detail: { messages: this.messages },

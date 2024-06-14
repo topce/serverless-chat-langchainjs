@@ -1,4 +1,4 @@
-import { AIChatMessage, AIChatCompletionDelta, AIChatProtocolClient } from '@microsoft/ai-chat-protocol';
+import { type AIChatCompletionDelta, type AIChatMessage, AIChatProtocolClient } from '@microsoft/ai-chat-protocol';
 
 export const apiBaseUrl: string = import.meta.env.VITE_API_URL || '';
 

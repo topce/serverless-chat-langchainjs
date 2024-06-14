@@ -1,8 +1,8 @@
-import process from 'node:process';
 import fs from 'node:fs/promises';
 import { join } from 'node:path';
+import process from 'node:process';
 import { finished } from 'node:stream/promises';
-import { HttpRequest, HttpResponseInit, InvocationContext, app } from '@azure/functions';
+import { type HttpRequest, type HttpResponseInit, type InvocationContext, app } from '@azure/functions';
 import { BlobServiceClient } from '@azure/storage-blob';
 import 'dotenv/config';
 import { data, notFound } from '../http-response';
@@ -25,6 +25,7 @@ async function getDocument(request: HttpRequest, context: InvocationContext): Pr
       const containerClient = blobServiceClient.getContainerClient(containerName);
       const response = await containerClient.getBlobClient(fileName).download();
 
+      // biome-ignore lint/style/noNonNullAssertion: it should never be undefined it is nodejs
       fileData = await streamToBuffer(response.readableStreamBody!);
     } else {
       // If no environment variables are set, it means we are running locally

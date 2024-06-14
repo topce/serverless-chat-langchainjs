@@ -1,4 +1,4 @@
-import { HttpResponseInit } from '@azure/functions';
+import type { HttpResponseInit } from '@azure/functions';
 
 export function badRequest(message: string): HttpResponseInit {
   return {

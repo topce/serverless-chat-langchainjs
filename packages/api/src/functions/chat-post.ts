@@ -1,21 +1,21 @@
 import { Readable } from 'node:stream';
-import { HttpRequest, InvocationContext, HttpResponseInit, app } from '@azure/functions';
-import { AIChatCompletionRequest, AIChatCompletionDelta } from '@microsoft/ai-chat-protocol';
-import { Document } from '@langchain/core/documents';
-import { AzureOpenAIEmbeddings, AzureChatOpenAI } from '@langchain/openai';
-import { Embeddings } from '@langchain/core/embeddings';
-import { BaseChatModel } from '@langchain/core/language_models/chat_models';
-import { VectorStore } from '@langchain/core/vectorstores';
-import { OllamaEmbeddings } from '@langchain/community/embeddings/ollama';
+import { type HttpRequest, type HttpResponseInit, type InvocationContext, app } from '@azure/functions';
 import { ChatOllama } from '@langchain/community/chat_models/ollama';
-import { FaissStore } from '@langchain/community/vectorstores/faiss';
-import { ChatPromptTemplate, PromptTemplate } from '@langchain/core/prompts';
-import { createStuffDocumentsChain } from 'langchain/chains/combine_documents';
+import { OllamaEmbeddings } from '@langchain/community/embeddings/ollama';
 import { AzureAISearchVectorStore } from '@langchain/community/vectorstores/azure_aisearch';
+import { FaissStore } from '@langchain/community/vectorstores/faiss';
+import type { Document } from '@langchain/core/documents';
+import type { Embeddings } from '@langchain/core/embeddings';
+import type { BaseChatModel } from '@langchain/core/language_models/chat_models';
+import { ChatPromptTemplate, PromptTemplate } from '@langchain/core/prompts';
+import type { VectorStore } from '@langchain/core/vectorstores';
+import { AzureChatOpenAI, AzureOpenAIEmbeddings } from '@langchain/openai';
+import type { AIChatCompletionDelta, AIChatCompletionRequest } from '@microsoft/ai-chat-protocol';
+import { createStuffDocumentsChain } from 'langchain/chains/combine_documents';
 import { createRetrievalChain } from 'langchain/chains/retrieval';
 import 'dotenv/config';
+import { faissStoreFolder, ollamaChatModel, ollamaEmbeddingsModel } from '../constants';
 import { badRequest, data, serviceUnavailable } from '../http-response';
-import { ollamaChatModel, ollamaEmbeddingsModel, faissStoreFolder } from '../constants';
 import { getAzureOpenAiTokenProvider, getCredentials } from '../security';
 
 const systemPrompt = `Assistant helps the Consto Real Estate company customers with questions and support requests. Be brief in your answers. Answer only plain text, DO NOT use Markdown.
@@ -90,6 +90,7 @@ export async function postChat(request: HttpRequest, context: InvocationContext)
       combineDocsChain,
     });
 
+    // biome-ignore lint/style/noNonNullAssertion: trust me I know what I'm doing ;-)
     const lastUserMessage = messages.at(-1)!.content;
     const responseStream = await chain.stream({
       input: lastUserMessage,
@@ -122,7 +123,7 @@ async function* createJsonStream(chunks: AsyncIterable<{ context: Document[]; an
 
     // Format response chunks in Newline delimited JSON
     // see https://github.com/ndjson/ndjson-spec
-    yield JSON.stringify(responseChunk) + '\n';
+    yield `${JSON.stringify(responseChunk)}\n`;
   }
 }
 
