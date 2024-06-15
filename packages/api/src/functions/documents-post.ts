@@ -4,7 +4,7 @@ import { OllamaEmbeddings } from '@langchain/community/embeddings/ollama';
 import { AzureAISearchVectorStore } from '@langchain/community/vectorstores/azure_aisearch';
 import { FaissStore } from '@langchain/community/vectorstores/faiss';
 import { AzureOpenAIEmbeddings } from '@langchain/openai';
-import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
+import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import 'dotenv/config';
 import { BlobServiceClient } from '@azure/storage-blob';
