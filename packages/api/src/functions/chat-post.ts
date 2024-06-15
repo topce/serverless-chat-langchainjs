@@ -68,7 +68,7 @@ export async function postChat(request: HttpRequest, context: InvocationContext)
       context.log('No Azure OpenAI endpoint set, using Ollama models and local DB');
       embeddings = new OllamaEmbeddings({ model: ollamaEmbeddingsModel });
       model = new ChatOllama({
-        temperature: 0.7,
+        temperature: 0.95,
         model: ollamaChatModel,
       });
       store = await FaissStore.load(faissStoreFolder, embeddings);
