@@ -92,6 +92,16 @@ export async function postChat(request: HttpRequest, context: InvocationContext)
 
     // biome-ignore lint/style/noNonNullAssertion: trust me I know what I'm doing ;-)
     const lastUserMessage = messages.at(-1)!.content;
+
+    // Search for the most similar document
+    const sources: string[] = [];
+    const documents = await store.similaritySearch(lastUserMessage, 3);
+    for (const document of documents) {
+      sources.push(
+        `[${document.metadata.source} ${document.metadata.loc.lines.from}-${document.metadata.loc.lines.to}]`,
+      );
+    }
+
     const responseStream = await chain.stream({
       input: lastUserMessage,
     });
