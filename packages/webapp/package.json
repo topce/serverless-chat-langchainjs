@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "lit-analyzer": "2.0.3",
-    "vite": "5.3.3"
+    "vite": "5.3.5"
   },
   "files": ["dist"]
 }

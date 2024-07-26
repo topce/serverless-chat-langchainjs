@@ -48,11 +48,11 @@
     "@biomejs/biome": "1.8.3",
     "concurrently": "^8.2.2",
     "lint-staged": "^15.2.7",
-    "prettier": "^3.3.2",
-    "rimraf": "^5.0.8",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
     "simple-git-hooks": "2.11.1",
-    "typescript": "5.5.3",
-    "xo": "0.58.0"
+    "typescript": "5.5.4",
+    "xo": "0.59.2"
   },
   "engines": {
     "node": ">=20",
@@ -91,8 +91,10 @@
       "@typescript-eslint/no-empty-function": "off",
       "@typescript-eslint/no-floating-promises": "off",
       "import/no-unassigned-import": "off",
+      "n/file-extension-in-import": "off",
       "import/extensions": "off",
       "n/prefer-global/process": "off",
+      "n/no-unsupported-features/node-builtins": "off",
       "unicorn/prefer-module": "off",
       "unicorn/no-new-array": "off",
       "unicorn/prevent-abbreviations": [

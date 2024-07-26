@@ -15,21 +15,21 @@
   "license": "MIT",
   "dependencies": {
     "@azure/functions": "4.5.0",
-    "@azure/identity": "4.3.0",
-    "@azure/search-documents": "12.0.0",
-    "@azure/storage-blob": "12.23.0",
-    "@langchain/community": "0.2.17",
-    "@langchain/core": "0.2.14",
-    "@langchain/openai": "0.2.1",
+    "@azure/identity": "4.4.0",
+    "@azure/search-documents": "12.1.0",
+    "@azure/storage-blob": "12.24.0",
+    "@langchain/community": "0.2.20",
+    "@langchain/core": "0.2.18",
+    "@langchain/openai": "0.2.5",
     "@microsoft/ai-chat-protocol": "1.0.0-beta.20240610.1",
     "dotenv": "16.4.5",
     "faiss-node": "0.5.1",
-    "langchain": "0.2.8",
+    "langchain": "0.2.11",
     "pdf-parse": "1.1.1"
   },
   "devDependencies": {
     "@types/node": "20.x",
     "azure-functions-core-tools": "4.0.5907",
-    "typescript": "5.5.3"
+    "typescript": "5.5.4"
   }
 }

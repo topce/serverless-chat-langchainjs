@@ -94,18 +94,19 @@ export async function postChat(request: HttpRequest, context: InvocationContext)
     const lastUserMessage = messages.at(-1)!.content;
 
     // Search for the most similar document
-    const sources: string[] = [];
+    const sources: Array<{ name: string; text: string }> = [];
     const documents = await store.similaritySearch(lastUserMessage, 3);
     for (const document of documents) {
-      sources.push(
-        `[${document.metadata.source} ${document.metadata.loc.lines.from}-${document.metadata.loc.lines.to}]`,
-      );
+      sources.push({
+        name: `${document.metadata.source} ${document.metadata.loc.lines.from}-${document.metadata.loc.lines.to}`,
+        text: document.pageContent,
+      });
     }
 
     const responseStream = await chain.stream({
       input: lastUserMessage,
     });
-    const jsonStream = Readable.from(createJsonStream(responseStream));
+    const jsonStream = Readable.from(createJsonStream(responseStream, sources));
 
     return data(jsonStream, {
       'Content-Type': 'application/x-ndjson',
@@ -120,7 +121,10 @@ export async function postChat(request: HttpRequest, context: InvocationContext)
 }
 
 // Transform the response chunks into a JSON stream
-async function* createJsonStream(chunks: AsyncIterable<{ context: Document[]; answer: string }>) {
+async function* createJsonStream(
+  chunks: AsyncIterable<{ context: Document[]; answer: string }>,
+  sources: Array<{ name: string; text: string }>,
+) {
   for await (const chunk of chunks) {
     if (!chunk.answer) continue;
 
@@ -133,6 +137,16 @@ async function* createJsonStream(chunks: AsyncIterable<{ context: Document[]; an
 
     // Format response chunks in Newline delimited JSON
     // see https://github.com/ndjson/ndjson-spec
+    yield `${JSON.stringify(responseChunk)}\n`;
+  }
+
+  for (const source of sources) {
+    const responseChunk: AIChatCompletionDelta = {
+      delta: {
+        content: `\n\n${source.name}: \n\n"${source.text}"`,
+        role: 'assistant',
+      },
+    };
     yield `${JSON.stringify(responseChunk)}\n`;
   }
 }
